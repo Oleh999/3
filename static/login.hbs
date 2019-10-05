@@ -1,0 +1,41 @@
+<!--Продовжуємо писати наш ЛУН з express та hbs )-->
+<!--Тепер ми знаємо шо таке express та шаблонізатор hbs.-->
+<!--Відповідно треба зробити попередню дзшку на express.-->
+<!--І дописати нормальний логін та реєстрацію. НУ і зайнти якусь квартирку-->
+<!--POST /register має мати данні email, імя, пароль-->
+<!--Після реєстрації ці данні записуються в масив users, де будуть обєкти-->
+<!--{-->
+<!--id: генеруєте автоматично-->
+<!--name: іся з форми, і т.д. з форми-->
+<!--}-->
+<!--Врахуйте, шо пісоя перезавнтаження він буде очищатись.-->
+<!--POST /login-->
+<!--Так само має форму логіна. мейл, пароль-->
+<!--Після вводу данних перевірити чи є такий юзер в масиві з юзерами.-->
+<!--Якшо є, то перенаправити res.redirect на його профайл-->
+<!--GET /users/:id, де відобразиться його інформація.-->
+<!--:id характеризує id юзера з масиву юзерів. Інформауція про юзера вже виведена за допомогою параметрів в hbs.-->
+<!--GET /house/:id-->
+<!--Відображає на будь яку сторінку з квартиркою.-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+     <h1 style="font-size: 40px;text-align: center">Check in</h1>
+
+<form action="/login" method="post" style="display: flex; justify-content:center; padding:10px">
+    <input type="text" name="email" placeholder="Email">
+    <input type="text" name="name" placeholder="Name">
+    <input type="password" name="password" placeholder="Password">
+    <input type="submit" >
+
+</form>
+</body>
+</html>
