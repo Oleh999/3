@@ -1,19 +1,11 @@
 const express = require('express');
-
 const expHbs = require('express-handlebars');
-
 const path = require('path');
-
 const app = express();
 
-const users =  [];
-
-const houses = [];
 
 app.use(express.json());
-
 app.use(express.static(path.join(__dirname,'static')));
-
 app.use(express.urlencoded({extended:true}));
 
 app.engine('hbs', expHbs({
@@ -21,69 +13,31 @@ app.engine('hbs', expHbs({
 }));
 
 app.set('view engine','.hbs');
-
 app.set('views',path.join(__dirname,'static'));
 
-app.get('/', (req,res) => {
-    res.render('register')
+let { user , house ,pages} = require('./controllers');
+let { user: userMiddleware ,house: houseMiddleware } = require('./middleware');
+
+app.get('/login', pages.login);
+app.get('/register', pages.register);
+app.get('/createHouse',pages.createHouse);
+app.get('/user',(req,res)=>{
+    res.render(user);
 });
+app.get('/users',user.findAll);
+app.get('/users/:user_id',userMiddleware.checkIsUserPresentMiddleware,user.getUserById );
+app.post('/register', userMiddleware.checkUserValidityMiddleware,user.createUser);
+app.post('/login',userMiddleware.checkUserLoginMiddleware,user.loginUser );
 
-app.get('/login', (req,res) => {
-    res.render('login')
-});
+app.get('/houses',house.findAllHouse);
+app.get('/createHouse/:house_id',houseMiddleware.checkIsHousePresentMiddleware,house.getHouseById);
+app.post('/createHouse',houseMiddleware.checkHouseValidityMiddleware,house.createHouse);
 
-app.get('/register', (req, res) => {
-    res.render('register')
-});
+app.get('/editUser',pages.editUser);
+app.post('/editUser',userMiddleware.checkEditUserValidityMiddleware,user.editUser );
 
-app.get('/createHouse',(req,res)=>{
-    res.render('createHouse');
-});
-
-app.get('/users',(req,res)=>{
-    res.json(users);
-});
-
-app.get('/houses',(req,res)=>{
-    res.json(houses);
-});
-
-app.get('/users/:user_id', (req, res) => {
-    const userID = users.find( user => +req.params.user_id === user.user_id);
-    res.json(userID);
-});
-
-app.get('/createHouse/:house_id', (req, res) => {
-    const houseID = houses.find( house => +req.params.house_id === house.house_id);
-    res.json(houseID);
-
-});
-
-app.post('/register', (req,res) => {
-    const user = req.body;
-    user.user_id = users.length + 1;
-    users.push(user);
-    console.log(user);
-    res.render('login');
-});
-
-
-app.post('/login', (req,res) => {
-    const login = req.body;
-    users.forEach( checkLogin  => {
-            checkLogin.userName === login.name && checkLogin.userPassword === login.password
-            ? res.redirect(`/users/${checkLogin.user_id}`): res.json('Try one more')
-    });
-
-});
-
-app.post('/createHouse',(req,res)=>{
-    const createHouse=req.body;
-    createHouse.house_id = houses.length + 1;
-    houses.push(createHouse);
-    console.log(createHouse);
-    res.redirect('/houses' );
-});
+app.get('/editHouse',pages.editHouse);
+app.post('/editHouse',houseMiddleware.checkEditHouseValidityMiddleware,house.editHouse );
 
 app.all('*',(req,res)=>{
     res.json('404 NOT FOUND' );
@@ -92,3 +46,4 @@ app.all('*',(req,res)=>{
 app.listen(3000,()=>{
     console.log('3000');
 });
+
