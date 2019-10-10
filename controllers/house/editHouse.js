@@ -5,9 +5,9 @@ module.exports = async (req, res) => {
 
         const {house_id,city,area,price,street} = req.body;
 
-        const query = `UPDATE houses SET city = ?, area = ?,price = ?,street = ? WHERE id = ${house_id} `;
+        const query = `UPDATE houses SET city = ${city}, area = ${area},price = ${price},street = ${street} WHERE id = ${house_id} `;
 
-        await provider.promise().query(query, [city, area, price,street]);
+        await provider.promise().query(query);
 
         res.redirect(`createHouse/${house_id}`);
 
