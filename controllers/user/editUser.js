@@ -4,9 +4,9 @@ module.exports = async (req, res) => {
     try {
         const {user_id,name,email,password} = req.body;
 
-        const query = `UPDATE users SET name = ${name}, email = ${email},password = ${password} WHERE id = ${user_id} `;
+        const query = `UPDATE users SET name = ?, email = ?,password = ? WHERE id = ? `;
 
-        await provider.promise().query(query);
+        await provider.promise().query(query,[name,email,password,user_id]);
 
         res.redirect(`users/${user_id}`);
 
@@ -14,4 +14,5 @@ module.exports = async (req, res) => {
         res.status(400).json(e.message);
     }
 };
+
 
