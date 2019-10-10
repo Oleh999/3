@@ -3,9 +3,9 @@ const {provider} = require('../../dataBase');
 module.exports = async (req,res) => {
     const {name,email,password} = req.body;
 
-    const query = `INSERT INTO users ( name, email ,password) VALUES (${name},${email},${password})`;
+    const query = `INSERT INTO users ( name, email ,password) VALUES (?,?,?)`;
 
-    await provider.promise().query(query);
+    await provider.promise().query(query,[name,email,password]);
 
     res.render('login');
 
