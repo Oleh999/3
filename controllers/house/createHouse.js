@@ -4,9 +4,9 @@ module.exports = async (req,res) => {
 
     const {city,area,price,street} = req.body;
 
-    const query = `INSERT INTO houses  (city,area,price,street) VALUES(${city},${area},${price},${street})`;
+    const query = `INSERT INTO houses (city,area,price,street) VALUES(?,?,?,?)`;
 
-    await provider.promise().query(query);
+    await provider.promise().query(query,[city,area,price,street]);
 
     res.render('createHouse');
 
